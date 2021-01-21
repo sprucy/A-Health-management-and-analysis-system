@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load i18n adminlte_options %}
+{% block title %}{{ title }} |
+{% get_adminlte_option 'site_title' as adminlte_site_title %}
+{% if adminlte_site_title.valid %}
+{{ adminlte_site_title.site_title }}
+{% else %}
+{{ site_title|default:_('Django site admin') }}
+{% endif %}
+{% endblock %}
+{% block page_content %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+      data-admin-utc-offset="{% now "Z" %}">
+
+<!-- Container -->
+<div id="container">
+    {% if not is_popup %}
+    <section class="content-header">
+        <h1>{% block content_title %}{% endblock %}</h1>
+        {% block breadcrumbs %}{% endblock %}
+    </section>
+    {% endif %}
+
+    <!-- Content -->
+    <section id="content" class="content">
+        {% block messages %}
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fa fa-check"></i>{{ message|capfirst }}</h5>
+        </div>
+        {% elif message.tags == 'error' %}
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fa fa-ban"></i>{{ message|capfirst }}</h5>
+        </div>
+        {% elif message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fa fa-warning"></i>{{ message|capfirst }}</h5>
+        </div>
+        {% elif message.tags == 'info' %}
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fa fa-info"></i>{{ message|capfirst }}</h5>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endblock messages %}
+        <div class="row">
+            <div class="col-md-12">
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+    </section>
+    <!-- END Content -->
+
+</div>
+<!-- END Container -->
+
+{% endblock %}
+
+{% block footer %}
+<div class="pull-right hidden-xs">
+<b>同济大学电子与信息学院 王云杉</b>
+</div>
+<strong>
+{% get_adminlte_option 'site_title' as adminlte_site_title %}
+{% if adminlte_site_title.valid %}
+{{ adminlte_site_title.site_title }}
+{% else %}
+{{ site_title|default:_('Django site admin') }}
+{% endif %}
+Copyright &copy; {% now 'Y' %}
+</strong> 同济大学数据库课程设计
+{% endblock %}
+
+{% block extrajs %} {% endblock %}
